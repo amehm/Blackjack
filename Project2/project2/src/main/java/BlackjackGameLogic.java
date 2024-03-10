@@ -5,7 +5,11 @@ public class BlackjackGameLogic {
         return null;
     }
     public int handTotal(ArrayList<Card> hand){
-        return 0;
+        int total = 0;
+        for (Card card : hand){
+            total += card.getValue();
+        }
+        return total;
     }
     public boolean evaluateBankerDraw(ArrayList<Card> hand){
         return false;
