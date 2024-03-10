@@ -28,7 +28,7 @@ public class BlackjackGameLogic {
 
         for (Card card : hand){
             total += card.getValue();
-            if (Objects.equals(card.getSuit(), "ace")){
+            if (card.getValue() == 1){
                 acesCount++;
             }
         }

@@ -5,8 +5,8 @@ public class Card {
         suit = theSuit;
         value = theValue;
     }
-    // getter and setters?
 
+    // getter and setters?
     public int getValue() {
         return value;
     }
