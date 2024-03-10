@@ -10,7 +10,7 @@
    <maven.compiler.target>11</maven.compiler.target>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <exec.mainClass>JavaFXTemplate</exec.mainClass>
+    <exec.mainClass>GameScreen</exec.mainClass>
   </properties>
   
  <dependencies>
