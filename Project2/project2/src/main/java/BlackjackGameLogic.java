@@ -27,7 +27,12 @@ public class BlackjackGameLogic {
         int acesCount = 0;
 
         for (Card card : hand){
-            total += card.getValue();
+            int cardValue = card.getValue();
+            if (cardValue > 10) { // face card, treated as 10
+                cardValue = 10;
+            }
+
+            total += cardValue;
             if (card.getValue() == 1){
                 acesCount++;
             }
