@@ -79,4 +79,43 @@ public class BlackjackGameLogicTest {
         BlackjackGameLogic game = new BlackjackGameLogic();
         assertFalse(game.evaluateBankerDraw(hand));
     }
+
+    @Test
+    public void TestHandTotalMany() {
+        BlackjackGameLogic gameLogic = new BlackjackGameLogic();
+
+        ArrayList<Card> hand1 = new ArrayList<>();
+        hand1.add(new Card("hearts", 2));
+        hand1.add(new Card("diamonds", 5));
+        assertEquals(7, gameLogic.handTotal(hand1));
+
+        ArrayList<Card> hand2 = new ArrayList<>();
+        hand2.add(new Card("hearts", 10)); // face card, should be 10
+        hand2.add(new Card("diamonds", 11)); // face card, should be 10
+        assertEquals(20, gameLogic.handTotal(hand2));
+
+        ArrayList<Card> hand3 = new ArrayList<>();
+        hand3.add(new Card("hearts", 1));
+        hand3.add(new Card("diamonds", 6));
+        assertEquals(17, gameLogic.handTotal(hand3)); // ace counts as 11
+
+        ArrayList<Card> hand4 = new ArrayList<>();
+        hand4.add(new Card("hearts", 1));
+        hand4.add(new Card("diamonds", 11)); // ace should count as 11
+        assertEquals(21, gameLogic.handTotal(hand4));
+
+
+        ArrayList<Card> hand5 = new ArrayList<>();
+        hand5.add(new Card("hearts", 1)); // ace should count as 11
+        hand5.add(new Card("diamonds", 1)); // ace should count as 1
+        hand5.add(new Card("spades", 1)); // ^
+        hand5.add(new Card("clubs", 1)); // ^
+        assertEquals(14, gameLogic.handTotal(hand5));
+
+        ArrayList<Card> hand6 = new ArrayList<>();
+        hand6.add(new Card("hearts", 1)); // should count as 1
+        hand6.add(new Card("diamonds", 1)); // ^
+        hand6.add(new Card("spades", 13)); // should count as 10
+        assertEquals(12, gameLogic.handTotal(hand6));
+    }
 }
