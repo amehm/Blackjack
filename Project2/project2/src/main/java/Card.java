@@ -15,7 +15,19 @@ public class Card {
         return suit;
     }
 
-    public String CardPathAsString(){
-        return value + "_of_" + suit;
+    public String CardPathAsString() {
+        String strVal;
+        if (value == 1) {
+            strVal = "ace";
+        } else if (value == 11) {
+            strVal = "jack";
+        } else if (value == 12) {
+            strVal = "queen";
+        } else if (value == 13) {
+            strVal = "king";
+        } else {
+            strVal = String.valueOf(value);
+        }
+        return strVal + "_of_" + suit;
     }
 }
