@@ -14,4 +14,8 @@ public class Card {
     public String getSuit() {
         return suit;
     }
+
+    public String CardPathAsString(){
+        return value + "_of_" + suit;
+    }
 }
