@@ -6,15 +6,25 @@ public class BlackjackGame {
     BlackjackDealer theDealer;
     BlackjackGameLogic gameLogic;
     double currentBet;
+    double currentValue;
     double totalWinnings;
 
     // Constructor to initialize a new game
-    public BlackjackGame(double startingTotalWinnings) {
+    public BlackjackGame() {
         playerHand = new ArrayList<>();
         bankerHand = new ArrayList<>();
         theDealer = new BlackjackDealer();
+        theDealer.generateDeck();
         gameLogic = new BlackjackGameLogic();
-        totalWinnings = startingTotalWinnings;
+        totalWinnings = 0;
+    }
+
+    public void setCurrentBet(double bet) {
+        this.currentBet = bet;
+    }
+
+    public void setCurrentValue(double val){
+        this.currentValue = val;
     }
 
     // Method to start a new round
@@ -45,6 +55,7 @@ public class BlackjackGame {
         }
     }
 
+
     // Method to let the player stand
     public void stand() {
         while (gameLogic.evaluateBankerDraw(bankerHand)) {
@@ -66,6 +77,13 @@ public class BlackjackGame {
             totalWinnings += currentBet;
         }
     }
+    public void hitOrStay(boolean hit) {
+        if (hit) {
+            hit();
+        } else {
+            stand();
+        }
+    }
 
     // Method to evaluate winnings/losses based on the outcome of the round
     public double evaluateWinnings() {
@@ -84,6 +102,12 @@ public class BlackjackGame {
             totalWinnings += currentBet;
             return 0;
         }
+    }
+    public double getCurrentBet() {
+        return currentBet;
+    }
+    public double getCurrentValue() {
+        return currentValue;
     }
 }
 
