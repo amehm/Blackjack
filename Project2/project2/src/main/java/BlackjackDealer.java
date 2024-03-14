@@ -7,7 +7,6 @@ public class BlackjackDealer {
     public void generateDeck(){
         deck = new ArrayList<>();
         String[] suits = {"hearts", "diamonds", "clubs", "spades"};
-//        String[] values = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "king", "queen"};
 
         for (String suit : suits) {
             for (int value = 1; value <= 13; value++) {

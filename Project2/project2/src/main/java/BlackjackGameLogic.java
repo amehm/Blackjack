@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Objects;
-
 
 public class BlackjackGameLogic {
     // given two hands this should return either player or dealer or push depending on who wins.
@@ -42,6 +40,8 @@ public class BlackjackGameLogic {
             total += 10;
             acesCount--;
         }
+
+
         return total;
     }
 

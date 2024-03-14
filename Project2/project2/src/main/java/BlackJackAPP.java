@@ -24,14 +24,15 @@ import java.io.InputStream;
 import java.util.Objects;
 
 public class BlackJackAPP extends Application {
-	private Button playButton, rulesButton, dealButton, hitButton, stayButton;
-	private HBox frontPageBox;
+	private Button dealButton;
+	private Button hitButton;
+	private Button stayButton;
 	private double startingMoneyAmount;
-
 
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Welcome to BlackJack");
@@ -39,50 +40,63 @@ public class BlackJackAPP extends Application {
 		primaryStage.centerOnScreen();
 		primaryStage.show();
 	}
-	private void WelcomePage(Stage primaryStage){
-		// title on welcome page
+
+	private void WelcomePage(Stage primaryStage) {
+		// Title on welcome page
 		Text title = new Text("BlackJack");
-		title.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 50));
+		title.setFont(Font.font("Lucida Calligraphy",150));
 		title.setFill(Color.rgb(247, 231, 231));
+		title.setTextAlignment(TextAlignment.CENTER);
 
-		rulesButton = new Button("Rules");
-		playButton = new Button("Play");
-		rulesButton.setStyle("-fx-font-family: 'Verdana';-fx-background-color: #F7E7E7; -fx-font-size: 40;-fx-background-radius: 5em;-fx-font-style: italic; -fx-font-weight: bold;");
-		playButton.setStyle("-fx-font-family: 'Verdana';-fx-background-color: #F7E7E7; -fx-font-size: 40;-fx-background-radius: 5em;-fx-font-style: italic; -fx-font-weight: bold;");
+		Button rulesButton = new Button("Rules");
+		Button playButton = new Button("Play");
+		rulesButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8fbc8f; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
+		playButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8fbc8f; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
 
-		frontPageBox = new HBox(20, rulesButton, playButton);
-		frontPageBox.setPadding(new Insets(50));
-		frontPageBox.setAlignment(javafx.geometry.Pos.CENTER);
+//		rulesButton.setPrefWidth(200);
+//		playButton.setPrefWidth(200);
+//		rulesButton.setPrefHeight(40);
+//		playButton.setPrefHeight(40);
+//		rulesButton.setStyle("-fx-font-family: 'Garamond';-fx-background-color: #2f4f4f; -fx-font-size: 40;-fx-background-radius: 5em;-fx-font-style: italic; -fx-font-weight: bold;-fx-text-fill: WHITE;");
+//		playButton.setStyle("-fx-font-family: 'Garamond';-fx-background-color: #2f4f4f; -fx-font-size: 40;-fx-background-radius: 5em;-fx-font-style: italic; -fx-font-weight: bold;-fx-text-fill: WHITE;");
+
+		HBox frontPageBox = new HBox(20, rulesButton, playButton);
+		frontPageBox.setAlignment(Pos.CENTER);
+
+		VBox allElements = new VBox(70, title, frontPageBox);
+		allElements.setAlignment(Pos.CENTER);
 
 		BorderPane borderPane = new BorderPane();
-		borderPane.setPrefSize(700, 700);
+		borderPane.setPrefSize(1000, 650);
 		borderPane.setPadding(new Insets(100));
-		borderPane.setTop(title);
-		BorderPane.setAlignment(title, javafx.geometry.Pos.CENTER);
-		borderPane.setBottom(frontPageBox);
+
+		borderPane.setCenter(allElements);
+		BorderPane.setAlignment(allElements, Pos.CENTER);
+
 		borderPane.setStyle("-fx-background-color: #1B3E12;");
-		Scene scene = new Scene(borderPane, 1000, 650);
+		Scene scene = new Scene(borderPane);
 
 		primaryStage.setScene(scene);
 
-		// rules page
+		// Rules page
 		rulesButton.setOnAction(event -> {
-            try {
-                RulesPage(primaryStage);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
+			try {
+				RulesPage(primaryStage);
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		});
 
-		// play page
+		// Play page
 		playButton.setOnAction(event -> {
-            try {
-                ChooseStartingValuePage(primaryStage);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
+			try {
+				ChooseStartingValuePage(primaryStage);
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		});
 	}
+
 	private ImageView goBackHomeButton(Stage primaryStage) throws FileNotFoundException {
 		InputStream stream = new FileInputStream("src/main/resources/blackjack-icon-3.png");
 		Image homeImage = new Image(stream);
@@ -93,6 +107,8 @@ public class BlackJackAPP extends Application {
 		goBackHomeImage.setFitHeight(50);
 		return goBackHomeImage;
 	}
+
+	// "Choose Starting Value" page
 	private void ChooseStartingValuePage(Stage primaryStage) throws FileNotFoundException {
 		BorderPane startingValPane = new BorderPane();
 		startingValPane.setPrefSize(700, 700);
@@ -123,7 +139,7 @@ public class BlackJackAPP extends Application {
 		HBox hbox = new HBox(10, prompt, enterMoney);
 		hbox.setAlignment(Pos.CENTER);
 
-		VBox vbox = new VBox(100, title,hbox);
+		VBox vbox = new VBox(100, title, hbox);
 		vbox.setAlignment(Pos.CENTER);
 		startingValPane.setCenter(vbox);
 
@@ -145,6 +161,8 @@ public class BlackJackAPP extends Application {
 		Scene scene = new Scene(startingValPane, 1000, 650);
 		primaryStage.setScene(scene);
 	}
+
+	// "Make Your Bets" page
 	private void MakeYourBetsPage(Stage primaryStage, BlackjackGame game) throws FileNotFoundException {
 		BorderPane betsPane = new BorderPane();
 		betsPane.setPrefSize(1000, 650);
@@ -155,15 +173,15 @@ public class BlackJackAPP extends Application {
 		betsPane.setLeft(homeImageView);
 		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
 
-		Text money = new Text("Balance: $"+String.valueOf(game.currentValue)+"0");
+		Text money = new Text("Balance: $" + String.valueOf(game.totalWinnings) + "0");
 		money.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
 		money.setFill(Color.rgb(247, 231, 231));
 
-		Text bet = new Text("Bet: $"+String.valueOf(game.currentBet));
+		Text bet = new Text("Bet: $" + String.valueOf(game.currentBet));
 		bet.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
 		bet.setFill(Color.rgb(247, 231, 231));
 
-		VBox topRightVals = new VBox(10,money,bet);
+		VBox topRightVals = new VBox(10, money, bet);
 		topRightVals.setMaxWidth(50);
 
 		betsPane.setRight(topRightVals);
@@ -184,80 +202,79 @@ public class BlackJackAPP extends Application {
 		ImageView chipBlack = importChips(primaryStage, "black");
 		ImageView chipPurple = importChips(primaryStage, "purple");
 
-		HBox firstThreeChips = new HBox(30,chipGrey, chipRed, chipGreen);
-		HBox secondThreeChips = new HBox(30,chipBlue, chipBlack, chipPurple);
-		VBox allChips = new VBox(15,firstThreeChips,secondThreeChips);
-
+		HBox firstThreeChips = new HBox(30, chipGrey, chipRed, chipGreen);
+		HBox secondThreeChips = new HBox(30, chipBlue, chipBlack, chipPurple);
+		VBox allChips = new VBox(15, firstThreeChips, secondThreeChips);
 
 
 		chipRed.setOnMouseClicked(event -> {
 			try {
-				betCalculation(primaryStage, game, 5, money,betsPane,titlePane);
+				betCalculation(primaryStage, game, 5, money, betsPane, titlePane);
 				updateBetAmountLabel(bet, game.getCurrentBet());
-			} catch (FileNotFoundException e){
-				e.printStackTrace(); // Handle the exception appropriately
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		});
 
 
 		chipGrey.setOnMouseClicked(event -> {
 			try {
-				betCalculation(primaryStage, game, 1, money,betsPane,titlePane);
+				betCalculation(primaryStage, game, 1, money, betsPane, titlePane);
 				updateBetAmountLabel(bet, game.getCurrentBet());
-			} catch (FileNotFoundException e){
-				e.printStackTrace(); // Handle the exception appropriately
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		});
 
 
 		chipGreen.setOnMouseClicked(event -> {
 			try {
-				betCalculation(primaryStage, game, 25, money,betsPane,titlePane);
+				betCalculation(primaryStage, game, 25, money, betsPane, titlePane);
 				updateBetAmountLabel(bet, game.getCurrentBet());
-			} catch (FileNotFoundException e){
-				e.printStackTrace(); // Handle the exception appropriately
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		});
 
 
 		chipBlue.setOnMouseClicked(event -> {
 			try {
-				betCalculation(primaryStage, game, 50, money,betsPane,titlePane);
+				betCalculation(primaryStage, game, 50, money, betsPane, titlePane);
 				updateBetAmountLabel(bet, game.getCurrentBet());
-			} catch (FileNotFoundException e){
-				e.printStackTrace(); // Handle the exception appropriately
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		});
 
 
 		chipBlack.setOnMouseClicked(event -> {
 			try {
-				betCalculation(primaryStage, game, 100, money,betsPane,titlePane);
+				betCalculation(primaryStage, game, 100, money, betsPane, titlePane);
 				updateBetAmountLabel(bet, game.getCurrentBet());
-			} catch (FileNotFoundException e){
-				e.printStackTrace(); // Handle the exception appropriately
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		});
 
 
 		chipPurple.setOnMouseClicked(event -> {
 			try {
-				betCalculation(primaryStage, game, 500, money,betsPane,titlePane);
+				betCalculation(primaryStage, game, 500, money, betsPane, titlePane);
 				updateBetAmountLabel(bet, game.getCurrentBet());
-			} catch (FileNotFoundException e){
-				e.printStackTrace(); // Handle the exception appropriately
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		});
 
 
 		Button finalizeBet = new Button("Place Bet");
-		finalizeBet.setStyle("-fx-font-family: 'Verdana';-fx-background-color: #191970; -fx-font-size: 40;-fx-background-radius: 100em;-fx-font-style: italic; -fx-font-weight: bold; -fx-text-fill: WHITE;");
+		finalizeBet.setStyle("-fx-font-family: 'Arial';-fx-font-size: 16px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-pref-width: 180px; -fx-pref-height: 60px; -fx-background-radius: 5px;");
 		Text emptySpace = new Text("       ");
 		emptySpace.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 80));
 
 		VBox betButtomAlignment = new VBox(10, emptySpace, finalizeBet);
 
-		HBox chipsandButton = new HBox(20, allChips, betButtomAlignment);
+		HBox chipsandButton = new HBox(30, allChips, betButtomAlignment);
 		betsPane.setBottom(chipsandButton);
 		chipsandButton.setAlignment(Pos.CENTER);
 
@@ -322,18 +339,20 @@ public class BlackJackAPP extends Application {
 		Scene playScene = new Scene(playPane, 1000, 650);
 		primaryStage.setScene(playScene);
 
-		Text money = new Text("Balance: $"+String.valueOf(game.currentValue));
+		Text money = new Text("Balance: $" + String.valueOf(game.totalWinnings));
 		money.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
 		money.setFill(Color.rgb(247, 231, 231));
-		Text bet = new Text("Bet: $"+String.valueOf(game.currentBet));
+		Text bet = new Text("Bet: $" + String.valueOf(game.currentBet));
 		bet.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
 		bet.setFill(Color.rgb(247, 231, 231));
-		VBox topRightVals = new VBox(10,money,bet);
+		VBox topRightVals = new VBox(10, money, bet);
 		playPane.setRight(topRightVals);
 		BorderPane.setAlignment(topRightVals, Pos.TOP_RIGHT);
 
 		Button hitButton = new Button("Hit");
 		Button stayButton = new Button("Stay");
+		hitButton.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: linear-gradient(#61a2b1, #2A5058); -fx-background-radius: 5em; -fx-padding: 8px 16px;-fx-pref-width: 120px; -fx-pref-height: 40px;");
+		stayButton.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: white; -fx-background-color: linear-gradient(#61a2b1, #2A5058); -fx-background-radius: 5em; -fx-padding: 8px 16px;-fx-pref-width: 120px; -fx-pref-height: 40px;");
 
 		HBox buttonBox = new HBox(20, hitButton, stayButton);
 		buttonBox.setAlignment(Pos.CENTER);
@@ -364,7 +383,7 @@ public class BlackJackAPP extends Application {
 
 		HBox playerHandBox = new HBox(10, playerTotalAligned);
 		HBox dealerHandBox = new HBox(10, dealerTotalAligned);
-		VBox bothHandsBox = new VBox(30,dealerHandBox,playerHandBox);
+		VBox bothHandsBox = new VBox(30, dealerHandBox, playerHandBox);
 		playPane.setCenter(bothHandsBox);
 		bothHandsBox.setAlignment(Pos.CENTER);
 		ImageView hiddenCard = new ImageView();
@@ -383,7 +402,7 @@ public class BlackJackAPP extends Application {
 		boolean firstCard = true;
 		for (Card card : game.bankerHand) {
 			if (firstCard) {
-                hiddenCard = new ImageView(new Image(new FileInputStream("src/main/resources/hidden.png")));
+				hiddenCard = new ImageView(new Image(new FileInputStream("src/main/resources/hidden.png")));
 				hiddenCard.setFitHeight(154);
 				hiddenCard.setFitWidth(110);
 				dealerHandBox.getChildren().add(hiddenCard);
@@ -398,7 +417,6 @@ public class BlackJackAPP extends Application {
 		}
 
 		hitButton.setOnAction(event -> {
-//			game.hitOrStay(true);
 			game.playerHand.add(game.theDealer.drawOne());
 			String imagePath = "src/main/resources/" + game.playerHand.get(game.playerHand.size() - 1).CardPathAsString() + ".png";
 			ImageView newCard;
@@ -410,8 +428,9 @@ public class BlackJackAPP extends Application {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			if (game.gameLogic.handTotal(game.playerHand) >= 22){
+			if (game.gameLogic.handTotal(game.playerHand) >= 22) {
 				hitButton.setDisable(true);
+				showOutcomeMessage(primaryStage, playPane, "Sorry, you lost!", game.totalWinnings, game);
 			}
 			// update strings:
 			playerTotal.setText("Player: " + String.valueOf(game.gameLogic.handTotal(game.playerHand)));
@@ -424,16 +443,16 @@ public class BlackJackAPP extends Application {
 			dealerHandBox.getChildren().remove(finalHiddenCard);
 			Card hiddenCardValue = game.bankerHand.get(0); //get value of hidden card
 			String hiddenCardPath = "src/main/resources/" + hiddenCardValue.CardPathAsString() + ".png";
-            ImageView revealedCard = null;
-            try {
-                revealedCard = new ImageView(new Image(new FileInputStream(hiddenCardPath)));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            revealedCard.setFitWidth(110);
+			ImageView revealedCard = null;
+			try {
+				revealedCard = new ImageView(new Image(new FileInputStream(hiddenCardPath)));
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+			revealedCard.setFitWidth(110);
 			revealedCard.setFitHeight(154);
 			dealerHandBox.getChildren().add(1, revealedCard);
-			
+
 			// evaluate if banker needs to draw again:
 			while (game.gameLogic.evaluateBankerDraw(game.bankerHand)) {
 				game.bankerHand.add(game.theDealer.drawOne());
@@ -447,51 +466,23 @@ public class BlackJackAPP extends Application {
 
 			String winner = game.gameLogic.whoWon(game.playerHand, game.bankerHand);
 			double winnings = game.evaluateWinnings();
-			double balance = game.currentValue + game.currentBet + winnings;
+			double balance = game.totalWinnings + game.currentBet + winnings;
 
 			// restart if negative balance
-			if (game.currentValue < 1){
-				showOutcomeMessage(primaryStage, playPane, "You've reached a balance of 0, restart?", game.currentValue, game);
-			}
-
-			else if (game.gameLogic.handTotal(game.playerHand) == 21) {
-				showOutcomeMessage(primaryStage, playPane, "Blackjack! You won!", game.currentValue, game);
+			if (game.totalWinnings < 1) {
+				showOutcomeMessage(primaryStage, playPane, "You've reached a balance of 0, restart?", game.totalWinnings, game);
+			} else if (game.gameLogic.handTotal(game.playerHand) == 21 && game.playerHand.size() == 2) {
+				game.totalWinnings *= 1.5;
+				showOutcomeMessage(primaryStage, playPane, "Blackjack! You won!", game.totalWinnings, game);
 			} else if (Objects.equals(winner, "player")) {
-				showOutcomeMessage(primaryStage, playPane, "Congratulations! You won!", game.currentValue, game);
+				showOutcomeMessage(primaryStage, playPane, "Congratulations! You won!", game.totalWinnings, game);
 			} else if (Objects.equals(winner, "dealer")) {
-				showOutcomeMessage(primaryStage, playPane, "Sorry, you lost!",game.currentValue, game);
+				showOutcomeMessage(primaryStage, playPane, "Sorry, you lost!", game.totalWinnings, game);
 			} else {
-				showOutcomeMessage(primaryStage, playPane, "Draw!", game.currentValue, game);
+				showOutcomeMessage(primaryStage, playPane, "Draw!", game.totalWinnings, game);
 			}
 
-			// MAKE WINNING SCREENS
-//			if (game.gameLogic.handTotal(game.playerHand) == 21){
-//                try {
-//                    YouGotaBlackjackPage(primaryStage, game);
-//                } catch (FileNotFoundException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//			else if (Objects.equals(winner, "player")){
-//				try {
-//					YouWonPage(primaryStage, game);
-//				} catch (FileNotFoundException e) {
-//					throw new RuntimeException(e);
-//				}
-//			}
-//			else if (Objects.equals(winner, "dealer")){
-//				try {
-//					YouLostPage(primaryStage, game);
-//				} catch (FileNotFoundException e) {
-//					throw new RuntimeException(e);
-//				}
-//			}
-//			else {
-//				System.out.println("I am unexpected");
-//			}
 		});
-
-
 	}
 	private void showOutcomeMessage(Stage primaryStage, BorderPane playPane, String message, Double balance, BlackjackGame game) {
 		ColorAdjust colorAdjust = new ColorAdjust();
@@ -510,6 +501,7 @@ public class BlackJackAPP extends Application {
 		Button playAgain = new Button("Play Again?");
 		playAgain.setOnAction(event -> {
 			try {
+				game.currentBet = 0;
 				MakeYourBetsPage(primaryStage, game);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -521,13 +513,13 @@ public class BlackJackAPP extends Application {
 			WelcomePage(primaryStage);
 		});
 
-		HBox buttonBox = new HBox(20,playAgain,backHome);
+		HBox buttonBox = new HBox(20, playAgain, backHome);
 		buttonBox.setAlignment(Pos.CENTER);
 
 		VBox messageBox = new VBox(20, messageText, balanceText, buttonBox);
 		messageBox.setAlignment(Pos.CENTER);
 
-		if (Objects.equals(message, "You've reached a balance of 0, restart?")){
+		if (Objects.equals(message, "You've reached a balance of 0, restart?")) {
 			playAgain.setDisable(true);
 		}
 
@@ -537,55 +529,6 @@ public class BlackJackAPP extends Application {
 		Scene scene = new Scene(stackPane, 1000, 650);
 		primaryStage.setScene(scene);
 	}
-
-	private void YouWonPage(Stage primaryStage, BlackjackGame game) throws FileNotFoundException {
-		BorderPane wonPane = new BorderPane();
-		wonPane.setPrefSize(1000, 650);
-		wonPane.setPadding(new Insets(10));
-		wonPane.setStyle("-fx-background-color: #1B3E12;");
-		ImageView homeImageView = goBackHomeButton(primaryStage);
-		wonPane.setTop(homeImageView);
-		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
-
-		Text announcement = new Text("YOU WON");
-		announcement.setFill(Color.rgb(247, 231, 231));
-		wonPane.setCenter(announcement);
-		Scene rulesScene = new Scene(wonPane, 1000, 650);
-		primaryStage.setScene(rulesScene);
-	}
-
-	private void YouLostPage(Stage primaryStage, BlackjackGame game) throws FileNotFoundException {
-		BorderPane lostPane = new BorderPane();
-		lostPane.setPrefSize(1000, 650);
-		lostPane.setPadding(new Insets(10));
-		lostPane.setStyle("-fx-background-color: #1B3E12;");
-		ImageView homeImageView = goBackHomeButton(primaryStage);
-		lostPane.setTop(homeImageView);
-		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
-
-		Text announcement = new Text("YOU LOST :(");
-		announcement.setFill(Color.rgb(247, 231, 231));
-		lostPane.setCenter(announcement);
-		Scene rulesScene = new Scene(lostPane, 1000, 650);
-		primaryStage.setScene(rulesScene);
-	}
-
-	private void YouGotaBlackjackPage(Stage primaryStage, BlackjackGame game) throws FileNotFoundException {
-		BorderPane pane = new BorderPane();
-		pane.setPrefSize(1000, 650);
-		pane.setPadding(new Insets(10));
-		pane.setStyle("-fx-background-color: #1B3E12;");
-		ImageView homeImageView = goBackHomeButton(primaryStage);
-		pane.setTop(homeImageView);
-		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
-
-		Text announcement = new Text("YOU GOT A BLACKJACK!!");
-		announcement.setFill(Color.rgb(247, 231, 231));
-		pane.setCenter(announcement);
-		Scene rulesScene = new Scene(pane, 1000, 650);
-		primaryStage.setScene(rulesScene);
-	}
-
 	private static ImageView getImageView(BlackjackGame game) {
 		Card drawnCard = game.bankerHand.get(game.bankerHand.size() - 1);
 		String drawnCardPath = "src/main/resources/" + drawnCard.CardPathAsString() + ".png";
@@ -606,23 +549,36 @@ public class BlackJackAPP extends Application {
 		rulesPane.setPadding(new Insets(10));
 		rulesPane.setStyle("-fx-background-color: #1B3E12;");
 
-//		Button goBackButton = new Button("Homepage");
-//		goBackButton.setStyle("-fx-font-family: 'Verdana';-fx-background-color: #F7E7E7; -fx-font-size: 20;-fx-background-radius: 5em;-fx-font-style: italic; -fx-font-weight: bold;");
-//		goBackButton.setOnAction(event -> {
-//			WelcomePage(primaryStage);
-//		});
-//
-//		rulesPane.setTop(goBackButton);
-//		BorderPane.setAlignment(goBackButton, Pos.TOP_LEFT);
 		ImageView homeImageView = goBackHomeButton(primaryStage);
 		rulesPane.setTop(homeImageView);
 		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
 
-		Text rulesText = new Text("Rules of BlackJack");
-		rulesText.setFill(Color.rgb(247, 231, 231));
-		rulesPane.setCenter(rulesText);
+		VBox rulesVBox = new VBox(10); // Space between each Text node is 10 pixels
+		rulesVBox.setAlignment(Pos.TOP_LEFT);
+		rulesVBox.setPadding(new Insets(20, 20, 20, 20)); // Adjust padding as needed
+
+		String[] rulesArray = {
+				"Rules of BlackJack",
+				"* Players: You, the user, play against a banker controlled by the computer.\n",
+				"* Initial Deal: Each player is dealt two cards. You can see both your cards, but only one of the banker's cards is visible.\n",
+				"* Card Values: Face cards are worth 10 points, and Aces can be worth 1 or 11 points, depending on what benefits you the most.\n",
+				"  * Player Options: After receiving your initial two cards, you can choose to:\n    * \"Stay\": Keep your current total.\n    * \"Hit\": Receive another card. You can continue hitting until your total exceeds 21, resulting in a \"bust\" and an automatic loss.\n",
+				"* Banker's Turn: Once you decide to stay, it's the banker's turn to play. The banker must hit on any hand totaling 16 or lower and must stay on any hand totaling 17 or higher.\n",
+				"* Winning: The player with the higher hand total wins. If both hands are equal, it's a draw, and no money changes hands.\n",
+				"* Blackjack: If you get a total of 21 with just two cards (an Ace and a card with a value of 10), you achieve \"blackjack.\" You win 150% of your bet unless the banker also achieves blackjack, resulting in a draw.\n"
+		};
+
+		for (String rule : rulesArray) {
+			Text ruleText = new Text(rule);
+			ruleText.setFill(Color.rgb(247, 231, 231));
+			ruleText.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 14));
+			ruleText.setWrappingWidth(960); // Ensure text wraps to avoid going offscreen
+			rulesVBox.getChildren().add(ruleText);
+		}
+
+		rulesPane.setCenter(rulesVBox);
 		Scene rulesScene = new Scene(rulesPane, 1000, 650);
 		primaryStage.setScene(rulesScene);
 	}
-
 }
+
