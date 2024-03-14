@@ -6,7 +6,6 @@ public class BlackjackGame {
     BlackjackDealer theDealer;
     BlackjackGameLogic gameLogic;
     double currentBet;
-    double currentValue;
     double totalWinnings;
 
     // Constructor to initialize a new game
@@ -28,7 +27,7 @@ public class BlackjackGame {
     }
 
     public void setCurrentValue(double val){
-        this.currentValue = val;
+        this.totalWinnings = val;
     }
 
     // Method to start a new round
@@ -94,17 +93,23 @@ public class BlackjackGame {
         String winner = gameLogic.whoWon(playerHand, bankerHand);
         if (winner.equals("player")) {
             // Player wins
-            double winnings = currentBet * 1.5;
-            currentValue += winnings;
+            double winnings = currentBet;
+            if (gameLogic.handTotal(playerHand) == 21 && playerHand.size() == 2) {
+                winnings = currentBet + currentBet * 1.5;
+            } else {
+                winnings = (currentBet * 2);
+            }
+
+            totalWinnings += winnings;
             return winnings;
         } else if (winner.equals("dealer")) {
             // Dealer wins
 //            currentValue -= currentBet;
 //            return -currentBet;
-            return currentValue;
+            return totalWinnings;
         } else {
             // draw
-            currentValue += currentBet;
+            totalWinnings += currentBet;
             return currentBet;
         }
     }
@@ -112,7 +117,7 @@ public class BlackjackGame {
         return currentBet;
     }
     public double getCurrentValue() {
-        return currentValue;
+        return totalWinnings;
     }
 }
 
