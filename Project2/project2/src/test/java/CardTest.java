@@ -7,8 +7,8 @@ public class CardTest {
     @Test
     public void TestConstructorSingle(){
         Card card = new Card("Hearts", 10);
-        assertEquals("Hearts", card.getSuit());
-        assertEquals(10, card.getValue());
+        assertEquals("Hearts", card.suit);
+        assertEquals(10, card.value);
     }
 
     @Test
@@ -22,8 +22,8 @@ public class CardTest {
         int[] expectedValues = {10, 5, 8};
 
         for (int i = 0; i < hand.size(); i++) {
-            assertEquals(expectedSuits[i], hand.get(i).getSuit());
-            assertEquals(expectedValues[i], hand.get(i).getValue());
+            assertEquals(expectedSuits[i], hand.get(i).suit);
+            assertEquals(expectedValues[i], hand.get(i).value);
         }
     }
 

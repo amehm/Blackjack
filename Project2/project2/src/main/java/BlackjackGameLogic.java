@@ -27,18 +27,18 @@ public class BlackjackGameLogic {
         int acesCount = 0;
 
         for (Card card : hand){
-            int cardValue = card.getValue();
+            int cardValue = card.value;
             if (cardValue > 10) { // face card, treated as 10
                 cardValue = 10;
             }
 
             total += cardValue;
-            if (card.getValue() == 1){
+            if (card.value == 1){
                 acesCount++;
             }
         }
-        // changing ace to either 1 or 11 depending on what is more beneficial to played
-        while (acesCount > 0 && total <= 11){
+        // changing ace to either 1 or 11 depending on what is more beneficial to player
+        while (acesCount > 0 && total + 10 <= 21){
             total += 10;
             acesCount--;
         }

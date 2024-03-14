@@ -19,6 +19,10 @@ public class BlackjackGame {
         totalWinnings = 0;
     }
 
+    public int getHandTotal(ArrayList<Card> hand){
+        return gameLogic.handTotal(hand);
+    }
+
     public void setCurrentBet(double bet) {
         this.currentBet = bet;
     }
@@ -91,16 +95,17 @@ public class BlackjackGame {
         if (winner.equals("player")) {
             // Player wins
             double winnings = currentBet * 1.5;
-            totalWinnings += winnings;
+            currentValue += winnings;
             return winnings;
         } else if (winner.equals("dealer")) {
             // Dealer wins
-            totalWinnings -= currentBet;
-            return -currentBet;
+//            currentValue -= currentBet;
+//            return -currentBet;
+            return currentValue;
         } else {
             // draw
-            totalWinnings += currentBet;
-            return 0;
+            currentValue += currentBet;
+            return currentBet;
         }
     }
     public double getCurrentBet() {

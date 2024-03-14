@@ -7,13 +7,13 @@ public class Card {
     }
 
     // getter and setters?
-    public int getValue() {
-        return value;
-    }
-
-    public String getSuit() {
-        return suit;
-    }
+//    public int getValue() {
+//        return value;
+//    }
+//
+//    public String getSuit() {
+//        return suit;
+//    }
 
     public String CardPathAsString() {
         String strVal;
