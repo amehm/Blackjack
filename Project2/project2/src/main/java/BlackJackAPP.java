@@ -50,8 +50,8 @@ public class BlackJackAPP extends Application {
 
 		Button rulesButton = new Button("Rules");
 		Button playButton = new Button("Play");
-		rulesButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8fbc8f; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
-		playButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8fbc8f; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
+		rulesButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
+		playButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
 
 //		rulesButton.setPrefWidth(200);
 //		playButton.setPrefWidth(200);
@@ -127,7 +127,7 @@ public class BlackJackAPP extends Application {
 		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
 
 		Text title = new Text("Please Choose Starting Money Amount");
-		title.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 35));
+		title.setFont(Font.font("Lucida Calligraphy", FontWeight.BOLD, FontPosture.ITALIC, 35));
 		title.setFill(Color.rgb(247, 231, 231));
 
 		Text prompt = new Text("Enter dollar amount then press enter:");
@@ -188,7 +188,7 @@ public class BlackJackAPP extends Application {
 		BorderPane.setAlignment(topRightVals, Pos.TOP_RIGHT);
 
 		Text title = new Text("Make your Bets");
-		title.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 50));
+		title.setFont(Font.font("Lucida Calligraphy",50));
 		title.setFill(Color.rgb(247, 231, 231));
 
 		StackPane titlePane = new StackPane(title);
@@ -268,7 +268,7 @@ public class BlackJackAPP extends Application {
 
 
 		Button finalizeBet = new Button("Place Bet");
-		finalizeBet.setStyle("-fx-font-family: 'Arial';-fx-font-size: 16px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-pref-width: 180px; -fx-pref-height: 60px; -fx-background-radius: 5px;");
+		finalizeBet.setStyle("-fx-font-family: 'Arial';-fx-font-size: 25px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-pref-width: 180px; -fx-pref-height: 60px; -fx-background-radius: 5px;");
 		Text emptySpace = new Text("       ");
 		emptySpace.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 80));
 
@@ -471,8 +471,9 @@ public class BlackJackAPP extends Application {
 			// restart if negative balance
 			if (game.totalWinnings < 1) {
 				showOutcomeMessage(primaryStage, playPane, "You've reached a balance of 0, restart?", game.totalWinnings, game);
-			} else if (game.gameLogic.handTotal(game.playerHand) == 21 && game.playerHand.size() == 2) {
-				game.totalWinnings *= 1.5;
+			}
+			else if (game.gameLogic.handTotal(game.playerHand) == 21 && game.playerHand.size() == 2) {
+//				game.totalWinnings *= 1.5;
 				showOutcomeMessage(primaryStage, playPane, "Blackjack! You won!", game.totalWinnings, game);
 			} else if (Objects.equals(winner, "player")) {
 				showOutcomeMessage(primaryStage, playPane, "Congratulations! You won!", game.totalWinnings, game);

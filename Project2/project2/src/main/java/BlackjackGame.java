@@ -6,7 +6,6 @@ public class BlackjackGame {
     BlackjackDealer theDealer;
     BlackjackGameLogic gameLogic;
     double currentBet;
-//    double currentValue;
     double totalWinnings;
 
     // Constructor to initialize a new game
@@ -94,8 +93,12 @@ public class BlackjackGame {
         String winner = gameLogic.whoWon(playerHand, bankerHand);
         if (winner.equals("player")) {
             // Player wins
-
-            double winnings = (currentBet * 2);
+            double winnings = currentBet;
+            if (gameLogic.handTotal(playerHand) == 21 && playerHand.size() == 2) {
+                winnings = currentBet + currentBet * 1.5;
+            } else {
+                winnings = (currentBet * 2);
+            }
 
             totalWinnings += winnings;
             return winnings;
