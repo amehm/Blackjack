@@ -2,61 +2,94 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BlackjackGameTest {
+    // test winnings when dealer wins
+    @Test
+    public void testEvaluateWinnings_DealerWins() {
+        BlackjackGame game = new BlackjackGame();
+        game.playerHand.add(new Card("Hearts", 7));
+        game.bankerHand.add(new Card("Diamonds", 10));
+        assertEquals(0, game.evaluateWinnings());
+    }
 
-//    @Test
-//    public void testStartNewRound() {
-//        BlackjackGame game = new BlackjackGame();
-//        game.startNewRound(10);
-//        assertEquals(10, game.getCurrentBet());
-//        // Assert that player's and banker's hands are initialized, assuming they are non-empty
-//        assertTrue(game.playerHand != null && !game.playerHand.isEmpty());
-//        assertTrue(game.bankerHand != null && !game.bankerHand.isEmpty());
-//    }
-//
-//    @Test
-//    public void testHit() {
-//        BlackjackGame game = new BlackjackGame();
-//        game.startNewRound(10);
-//        int initialPlayerHandSize = game.playerHand.size();
-//        game.hit();
-//        assertTrue(game.playerHand.size() > initialPlayerHandSize);
-//    }
-//
-//    @Test
-//    public void testStand() {
-//        BlackjackGame game = new BlackjackGame();
-//        game.startNewRound(10);
-//        game.stand();
-//        assertTrue(game.playerHand.isEmpty());
-//        assertTrue(game.bankerHand.isEmpty());
-//    }
-//
-//    @Test
-//    public void testStartNewRound_Many() {
-//        BlackjackGame game = new BlackjackGame();
-//        game.startNewRound(10);
-//        game.startNewRound(20);
-//        assertEquals(20, game.getCurrentBet()); // Latest bet is considered
-//        assertTrue(game.playerHand != null && !game.playerHand.isEmpty());
-//        assertTrue(game.bankerHand != null && !game.bankerHand.isEmpty());
-//    }
-//
-//    @Test
-//    public void testStartNewRound_None() {
-//        BlackjackGame game = new BlackjackGame();
-//        assertThrows(IllegalArgumentException.class, () -> {
-//            game.startNewRound(0);
-//        });
-//        assertTrue(game.playerHand.isEmpty());
-//        assertTrue(game.bankerHand.isEmpty());
-//    }
-//
-//    @Test
-//    public void testStartNewRound_One() {
-//        BlackjackGame game = new BlackjackGame();
-//        game.startNewRound(10);
-//        assertEquals(10, game.getCurrentBet());
-//        assertTrue(game.playerHand != null && !game.playerHand.isEmpty());
-//        assertTrue(game.bankerHand != null && !game.bankerHand.isEmpty();
-//}
+    // test winnings for a single round
+    @Test
+    public void testEvaluateWinnings_OneRound() {
+        BlackjackGame game = new BlackjackGame();
+        game.setCurrentBet(10);
+        game.playerHand.add(new Card("Hearts", 10));
+        game.bankerHand.add(new Card("Diamonds", 5));
+        double winnings = game.evaluateWinnings();
+        assertEquals(20, winnings);
+    }
+
+    // test winnings when no rounds are played
+    @Test
+    public void testEvaluateWinnings_NoneRound() {
+        BlackjackGame game = new BlackjackGame();
+        game.setCurrentBet(10);
+        double winnings = game.evaluateWinnings();
+        assertEquals(10, winnings);
+    }
+
+    // test winnings for multiple rounds
+    @Test
+    public void testEvaluateWinnings_ManyRounds() {
+        BlackjackGame game = new BlackjackGame();
+        game.setCurrentBet(10);
+        game.playerHand.add(new Card("Hearts", 10));
+        game.bankerHand.add(new Card("Diamonds", 7));
+        game.evaluateWinnings();
+        game.setCurrentBet(20);
+        game.playerHand.clear();
+        game.bankerHand.clear();
+        game.playerHand.add(new Card("Clubs", 9));
+        game.bankerHand.add(new Card("Spades", 10));
+        double secondRoundWinnings = game.evaluateWinnings();
+        assertEquals(20, secondRoundWinnings);
+    }
+
+    // test winnings in a push scenario
+    @Test
+    public void testEvaluateWinnings_Push() {
+        BlackjackGame game = new BlackjackGame();
+        game.setCurrentBet(10);
+        game.playerHand.add(new Card("Hearts", 10));
+        game.playerHand.add(new Card("Clubs", 2));
+        game.bankerHand.add(new Card("Diamonds", 9));
+        game.bankerHand.add(new Card("Spades", 3));
+        double winnings = game.evaluateWinnings();
+        assertEquals(10, winnings);
+    }
+
+    // test winnings for player blackjack
+    @Test
+    public void testEvaluateWinnings_PlayerBlackjack() {
+        BlackjackGame game = new BlackjackGame();
+        game.setCurrentBet(10);
+        game.playerHand.add(new Card("Hearts", 1));
+        game.playerHand.add(new Card("Clubs", 10));
+        double winnings = game.evaluateWinnings();
+        assertEquals(25, winnings);
+    }
+
+    // test winnings for dealer blackjack
+    @Test
+    public void testEvaluateWinnings_DealerBlackjack() {
+        BlackjackGame game = new BlackjackGame();
+        game.setCurrentBet(10);
+        game.playerHand.add(new Card("Hearts", 9));
+        game.bankerHand.add(new Card("Diamonds", 1));
+        game.bankerHand.add(new Card("Spades", 10));
+        double winnings = game.evaluateWinnings();
+        assertEquals(0, winnings);
+    }
+
+    // test winnings when no cards are dealt
+    @Test
+    public void testEvaluateWinnings_EmptyHands() {
+        BlackjackGame game = new BlackjackGame();
+        game.setCurrentBet(10);
+        double winnings = game.evaluateWinnings();
+        assertEquals(10, winnings);
+    }
 }
