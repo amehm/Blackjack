@@ -63,6 +63,49 @@ public class BlackjackGameLogicTest {
         BlackjackGameLogic game = new BlackjackGameLogic();
         assertEquals(21, game.handTotal(hand));
     }
+
+    @Test
+    public void TestWhoWonSingle_DealerBlackjack() {
+        ArrayList<Card> playerHand = new ArrayList<>();
+        ArrayList<Card> dealerHand = new ArrayList<>();
+
+        playerHand.add(new Card("Hearts", 10));
+        dealerHand.add(new Card("Spades", 1)); // Ace
+        dealerHand.add(new Card("Diamonds", 10)); // Ten (face card) - Blackjack
+
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertEquals("dealer", game.whoWon(playerHand, dealerHand));
+    }
+
+    @Test
+    public void TestWhoWonSingle_PlayerBlackjack() {
+        ArrayList<Card> playerHand = new ArrayList<>();
+        ArrayList<Card> dealerHand = new ArrayList<>();
+
+        playerHand.add(new Card("Hearts", 1)); // Ace
+        playerHand.add(new Card("Diamonds", 10)); // Ten (face card) - Blackjack
+        dealerHand.add(new Card("Spades", 9));
+
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertEquals("player", game.whoWon(playerHand, dealerHand));
+    }
+
+    @Test
+    public void TestWhoWonSingle_DrawWithBust() {
+        ArrayList<Card> playerHand = new ArrayList<>();
+        ArrayList<Card> dealerHand = new ArrayList<>();
+
+        playerHand.add(new Card("Hearts", 10));
+        playerHand.add(new Card("Diamonds", 10));
+        playerHand.add(new Card("Spades", 10)); // Bust (30)
+
+        dealerHand.add(new Card("Hearts", 9));
+        dealerHand.add(new Card("Clubs", 10)); // Bust (19)
+
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertEquals("push", game.whoWon(playerHand, dealerHand));
+    }
+
     @Test
     public void TestEvaluateBankerDrawSingle_Draw() {
         ArrayList<Card> hand = new ArrayList<>();
@@ -71,6 +114,7 @@ public class BlackjackGameLogicTest {
         BlackjackGameLogic game = new BlackjackGameLogic();
         assertTrue(game.evaluateBankerDraw(hand));
     }
+
     @Test
     public void TestEvaluateBankerDrawSingle_DontDraw() {
         ArrayList<Card> hand = new ArrayList<>();
