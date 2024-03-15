@@ -17,6 +17,13 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Objects;
 
+/*-------------------------------------------
+Program 2: Blackjack
+Course: CS 342, Spring 2024, UIC
+System: IntelliJ
+Author: Aleena Mehmood, Fiza Bajwa
+------------------------------------------- */
+
 public class BlackJackAPP extends Application {
 	private Button dealButton;
 	private Button hitButton;
@@ -30,7 +37,7 @@ public class BlackJackAPP extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Welcome to BlackJack");
-		WelcomePage(primaryStage);
+		WelcomePage(primaryStage); // set welcome page to screen
 		primaryStage.centerOnScreen();
 		primaryStage.show();
 	}
@@ -88,9 +95,15 @@ public class BlackJackAPP extends Application {
 		InputStream stream = new FileInputStream("src/main/resources/blackjack-icon-3.png");
 		Image homeImage = new Image(stream);
 
+		// creates an ImageView with home image
 		ImageView goBackHomeImage = new ImageView(homeImage);
+
+		// set action to go back to welcome page when clicked
+
 		goBackHomeImage.setOnMouseClicked(event -> WelcomePage(primaryStage));
+		// dimensions for the image
 		goBackHomeImage.setFitWidth(50);
+
 		goBackHomeImage.setFitHeight(50);
 		return goBackHomeImage;
 	}
@@ -135,12 +148,17 @@ public class BlackJackAPP extends Application {
 		enterMoney.setOnKeyPressed(event -> {
 			if (event.getCode().equals(KeyCode.ENTER)) {
 				try {
+					// get entered money amount and validate
 					startingMoneyAmount = Double.parseDouble(enterMoney.getText());
+
+					// start new game with entered money value and proceed
 					if (startingMoneyAmount <= 0) {
 						throw new NumberFormatException("Please enter a positive number.");
 					}
+
 					BlackjackGame game = new BlackjackGame();
 					game.setCurrentValue(startingMoneyAmount);
+
 					MakeYourBetsPage(primaryStage, game);
 				} catch (NumberFormatException e) {
 					System.err.println("Please enter a valid number.");
@@ -186,7 +204,6 @@ public class BlackJackAPP extends Application {
 		StackPane titlePane = new StackPane(title);
 		betsPane.setCenter(titlePane);
 
-
 		ImageView chipGrey = importChips(primaryStage, "grey");
 		ImageView chipRed = importChips(primaryStage, "red");
 		ImageView chipGreen = importChips(primaryStage, "green");
@@ -198,7 +215,7 @@ public class BlackJackAPP extends Application {
 		HBox secondThreeChips = new HBox(30, chipBlue, chipBlack, chipPurple);
 		VBox allChips = new VBox(15, firstThreeChips, secondThreeChips);
 
-
+		// on chip click, calculate bet, update label
 		chipRed.setOnMouseClicked(event -> {
 			try {
 				betCalculation(primaryStage, game, 5, money, betsPane, titlePane);
@@ -207,7 +224,6 @@ public class BlackJackAPP extends Application {
 				e.printStackTrace();
 			}
 		});
-
 
 		chipGrey.setOnMouseClicked(event -> {
 			try {
@@ -218,7 +234,6 @@ public class BlackJackAPP extends Application {
 			}
 		});
 
-
 		chipGreen.setOnMouseClicked(event -> {
 			try {
 				betCalculation(primaryStage, game, 25, money, betsPane, titlePane);
@@ -227,7 +242,6 @@ public class BlackJackAPP extends Application {
 				e.printStackTrace();
 			}
 		});
-
 
 		chipBlue.setOnMouseClicked(event -> {
 			try {
@@ -238,7 +252,6 @@ public class BlackJackAPP extends Application {
 			}
 		});
 
-
 		chipBlack.setOnMouseClicked(event -> {
 			try {
 				betCalculation(primaryStage, game, 100, money, betsPane, titlePane);
@@ -248,7 +261,6 @@ public class BlackJackAPP extends Application {
 			}
 		});
 
-
 		chipPurple.setOnMouseClicked(event -> {
 			try {
 				betCalculation(primaryStage, game, 500, money, betsPane, titlePane);
@@ -257,7 +269,6 @@ public class BlackJackAPP extends Application {
 				e.printStackTrace();
 			}
 		});
-
 
 		Button finalizeBet = new Button("Place Bet");
 		finalizeBet.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 40px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 200; -fx-pref-height: 50px; -fx-background-radius: 10px;-fx-font-weight: 600");
@@ -398,6 +409,7 @@ public class BlackJackAPP extends Application {
 			playerHandBox.getChildren().add(imageCard);
 		}
 
+		// show dealer's hand with one card hidden
 		boolean firstCard = true;
 		for (Card card : game.bankerHand) {
 			if (firstCard) {
@@ -415,6 +427,7 @@ public class BlackJackAPP extends Application {
 			}
 		}
 
+		// hit button action
 		hitButton.setOnAction(event -> {
 			game.playerHand.add(game.theDealer.drawOne());
 			String imagePath = "src/main/resources/" + game.playerHand.get(game.playerHand.size() - 1).CardPathAsString() + ".png";
@@ -435,6 +448,7 @@ public class BlackJackAPP extends Application {
 			playerTotal.setText("Player: " + String.valueOf(game.gameLogic.handTotal(game.playerHand)));
 		});
 
+		// Stay button action
 		ImageView finalHiddenCard = hiddenCard;
 		stayButton.setOnAction(event -> {
 			stayButton.setDisable(true);
@@ -497,8 +511,6 @@ public class BlackJackAPP extends Application {
 		messageText.setFill(Color.WHITE);
 		messageText.setTextAlignment(TextAlignment.CENTER);
 
-
-
 		Text balanceText = new Text("New Balance: $" + balance);
 		balanceText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 		balanceText.setFill(Color.WHITE);
@@ -534,13 +546,13 @@ public class BlackJackAPP extends Application {
 			playAgain.setDisable(true);
 		}
 
-
 		StackPane stackPane = new StackPane(playPane, messageBox);
 		StackPane.setAlignment(messageBox, Pos.CENTER);
 
 		Scene scene = new Scene(stackPane, 1000, 650);
 		primaryStage.setScene(scene);
 	}
+
 	private static ImageView getImageView(BlackjackGame game) {
 		Card drawnCard = game.bankerHand.get(game.bankerHand.size() - 1);
 		String drawnCardPath = "src/main/resources/" + drawnCard.CardPathAsString() + ".png";

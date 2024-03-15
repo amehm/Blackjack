@@ -30,84 +30,26 @@ public class BlackjackGame {
         this.totalWinnings = val;
     }
 
-//    // Method to start a new round
-//    public void startNewRound(double bet) {
-//        if (bet > totalWinnings) {
-//            throw new IllegalArgumentException("Bet cannot exceed total winnings.");
-//        }
-//        currentBet = bet;
-//        // temp deduction from total winnings for the bet
-//        totalWinnings -= bet;
-//
-//        playerHand.clear();
-//        bankerHand.clear();
-//
-//        theDealer.shuffleDeck();
-//
-//        // Deal two cards to each player
-//        playerHand.addAll(theDealer.dealHand());
-//        bankerHand.addAll(theDealer.dealHand());
-//    }
-
-//    // Method to let the player hit
-//    public void hit() {
-//        // adds card to player's hand
-//        playerHand.add(theDealer.drawOne());
-//        if (gameLogic.handTotal(playerHand) > 21) {
-//            endRound();
-//        }
-//    }
-
-
-//    // Method to let the player stand
-//    public void stand() {
-//        while (gameLogic.evaluateBankerDraw(bankerHand)) {
-//            // dealer draws until total is 17+
-//            bankerHand.add(theDealer.drawOne());
-//        }
-//        endRound();
-//    }
-//
-//    // Method to evaluate winnings/losses at the end of the round
-//    private void endRound() {
-//        double roundWinnings = evaluateWinnings();
-//        if (roundWinnings > 0) {
-//            System.out.println("Player wins the round!");
-//        } else if (roundWinnings < 0) {
-//            System.out.println("Dealer wins the round!");
-//        } else {
-//            System.out.println("It's a draw!");
-//            totalWinnings += currentBet;
-//        }
-////    }
-//    public void hitOrStay(boolean hit) {
-//        if (hit) {
-//            hit();
-//        } else {
-//            stand();
-//        }
-//    }
-
     // Method to evaluate winnings/losses based on the outcome of the round
+    // return the amount won or lost based on the value in currentBet
     public double evaluateWinnings() {
         String winner = gameLogic.whoWon(playerHand, bankerHand);
         if (winner.equals("player")) {
             // Player wins
             double winnings = currentBet;
-            if (gameLogic.handTotal(playerHand) == 21 && playerHand.size() == 2) {
-                winnings = currentBet + currentBet * 1.5;
+            if (gameLogic.handTotal(playerHand) == 21 && playerHand.size() == 2) { // blackjack
+                winnings = currentBet + currentBet * 1.5; // return bet plus 150% of what they bet
             } else {
-                winnings = (currentBet * 2);
+                winnings = (currentBet * 2); // return twice of what they bet
             }
-
             totalWinnings += winnings;
             return winnings;
         } else if (winner.equals("dealer")) {
             // Dealer wins
-            return totalWinnings;
+            return totalWinnings; // get nothing back, lost money they bet
         } else {
             // draw
-            totalWinnings += currentBet;
+            totalWinnings += currentBet; // tied so return what they originally bet
             return currentBet;
         }
     }
@@ -118,4 +60,3 @@ public class BlackjackGame {
         return totalWinnings;
     }
 }
-

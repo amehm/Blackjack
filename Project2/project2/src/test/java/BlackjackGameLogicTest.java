@@ -46,6 +46,28 @@ public class BlackjackGameLogicTest {
         BlackjackGameLogic game = new BlackjackGameLogic();
         assertEquals(15, game.handTotal(hand));
     }
+
+    public void TestHandTotalNone() {
+        ArrayList<Card> hand = new ArrayList<>();
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertEquals(0, game.handTotal(hand));
+    }
+
+    @Test
+    public void TestEvaluateBankerDrawOne_Above16() {
+        ArrayList<Card> hand = new ArrayList<>();
+        hand.add(new Card("Spades", 10));
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertTrue(game.evaluateBankerDraw(hand)); // less than 16, should draw
+    }
+
+    @Test
+    public void TestEvaluateBankerDrawOne_Below17() {
+        ArrayList<Card> hand = new ArrayList<>();
+        hand.add(new Card("Hearts", 6));
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertTrue(game.evaluateBankerDraw(hand));
+    }
     @Test
     public void TestHandTotalSingle_Ace1() {
         ArrayList<Card> hand = new ArrayList<>();
@@ -90,21 +112,6 @@ public class BlackjackGameLogicTest {
         assertEquals("player", game.whoWon(playerHand, dealerHand));
     }
 
-    @Test
-    public void TestWhoWonSingle_DrawWithBust() {
-        ArrayList<Card> playerHand = new ArrayList<>();
-        ArrayList<Card> dealerHand = new ArrayList<>();
-
-        playerHand.add(new Card("Hearts", 10));
-        playerHand.add(new Card("Diamonds", 10));
-        playerHand.add(new Card("Spades", 10)); // Bust (30)
-
-        dealerHand.add(new Card("Hearts", 9));
-        dealerHand.add(new Card("Clubs", 10)); // Bust (19)
-
-        BlackjackGameLogic game = new BlackjackGameLogic();
-        assertEquals("push", game.whoWon(playerHand, dealerHand));
-    }
 
     @Test
     public void TestEvaluateBankerDrawSingle_Draw() {
@@ -161,5 +168,34 @@ public class BlackjackGameLogicTest {
         hand6.add(new Card("diamonds", 1)); // ^
         hand6.add(new Card("spades", 13)); // should count as 10
         assertEquals(12, gameLogic.handTotal(hand6));
+    }
+
+    @Test
+    public void TestHandTotalAllAces() {
+        ArrayList<Card> hand = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            hand.add(new Card("Hearts", 1));
+        }
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertEquals(14, game.handTotal(hand));
+    }
+
+    @Test
+    public void TestEvaluateBankerDrawExactly16() {
+        ArrayList<Card> hand = new ArrayList<>();
+        hand.add(new Card("Hearts", 10));
+        hand.add(new Card("Clubs", 6));
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertTrue(game.evaluateBankerDraw(hand)); // draw at 16
+    }
+
+    @Test
+    public void TestEvaluateBankerDrawComplex() {
+        ArrayList<Card> hand = new ArrayList<>();
+        hand.add(new Card("Hearts", 1));
+        hand.add(new Card("Diamonds", 1));
+        hand.add(new Card("Clubs", 7));
+        BlackjackGameLogic game = new BlackjackGameLogic();
+        assertFalse(game.evaluateBankerDraw(hand));
     }
 }
