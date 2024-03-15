@@ -40,8 +40,6 @@ public class BlackjackGameLogic {
             total += 10;
             acesCount--;
         }
-
-
         return total;
     }
 

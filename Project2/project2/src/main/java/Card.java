@@ -6,15 +6,7 @@ public class Card {
         value = theValue;
     }
 
-    // getter and setters?
-//    public int getValue() {
-//        return value;
-//    }
-//
-//    public String getSuit() {
-//        return suit;
-//    }
-
+    // return in form of images to load image into screen
     public String CardPathAsString() {
         String strVal;
         if (value == 1) {

@@ -1,7 +1,4 @@
-import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
 import javafx.application.Application;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
@@ -14,10 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -50,15 +44,8 @@ public class BlackJackAPP extends Application {
 
 		Button rulesButton = new Button("Rules");
 		Button playButton = new Button("Play");
-		rulesButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
-		playButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 25px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 120px; -fx-pref-height: 40px; -fx-background-radius: 20px;-fx-font-weight: bold");
-
-//		rulesButton.setPrefWidth(200);
-//		playButton.setPrefWidth(200);
-//		rulesButton.setPrefHeight(40);
-//		playButton.setPrefHeight(40);
-//		rulesButton.setStyle("-fx-font-family: 'Garamond';-fx-background-color: #2f4f4f; -fx-font-size: 40;-fx-background-radius: 5em;-fx-font-style: italic; -fx-font-weight: bold;-fx-text-fill: WHITE;");
-//		playButton.setStyle("-fx-font-family: 'Garamond';-fx-background-color: #2f4f4f; -fx-font-size: 40;-fx-background-radius: 5em;-fx-font-style: italic; -fx-font-weight: bold;-fx-text-fill: WHITE;");
+		rulesButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 40px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 200; -fx-pref-height: 50px; -fx-background-radius: 10px;-fx-font-weight: 600");
+		playButton.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 40px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 200; -fx-pref-height: 50px; -fx-background-radius: 10px;-fx-font-weight: 600");
 
 		HBox frontPageBox = new HBox(20, rulesButton, playButton);
 		frontPageBox.setAlignment(Pos.CENTER);
@@ -127,19 +114,21 @@ public class BlackJackAPP extends Application {
 		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
 
 		Text title = new Text("Please Choose Starting Money Amount");
-		title.setFont(Font.font("Lucida Calligraphy", FontWeight.BOLD, FontPosture.ITALIC, 35));
+		title.setFont(Font.font("Lucida Calligraphy", FontWeight.BOLD, FontPosture.ITALIC, 45));
 		title.setFill(Color.rgb(247, 231, 231));
 
 		Text prompt = new Text("Enter dollar amount then press enter:");
-		prompt.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		prompt.setFont(Font.font("Arial", FontPosture.ITALIC, 20));
 		prompt.setFill(Color.rgb(247, 231, 231));
 
 		TextField enterMoney = new TextField();
+
 		enterMoney.setPromptText("Enter amount here then press enter");
+		enterMoney.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 25px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-border-color: transparent;");
 		HBox hbox = new HBox(10, prompt, enterMoney);
 		hbox.setAlignment(Pos.CENTER);
 
-		VBox vbox = new VBox(100, title, hbox);
+		VBox vbox = new VBox(35, title, hbox);
 		vbox.setAlignment(Pos.CENTER);
 		startingValPane.setCenter(vbox);
 
@@ -147,6 +136,9 @@ public class BlackJackAPP extends Application {
 			if (event.getCode().equals(KeyCode.ENTER)) {
 				try {
 					startingMoneyAmount = Double.parseDouble(enterMoney.getText());
+					if (startingMoneyAmount <= 0) {
+						throw new NumberFormatException("Please enter a positive number.");
+					}
 					BlackjackGame game = new BlackjackGame();
 					game.setCurrentValue(startingMoneyAmount);
 					MakeYourBetsPage(primaryStage, game);
@@ -173,22 +165,22 @@ public class BlackJackAPP extends Application {
 		betsPane.setLeft(homeImageView);
 		BorderPane.setAlignment(homeImageView, Pos.TOP_LEFT);
 
-		Text money = new Text("Balance: $" + String.valueOf(game.totalWinnings) + "0");
-		money.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		Text money = new Text("Balance: $" + String.valueOf(game.totalWinnings));
+		money.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
 		money.setFill(Color.rgb(247, 231, 231));
 
 		Text bet = new Text("Bet: $" + String.valueOf(game.currentBet));
-		bet.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		bet.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
 		bet.setFill(Color.rgb(247, 231, 231));
-
-		VBox topRightVals = new VBox(10, money, bet);
-		topRightVals.setMaxWidth(50);
+		VBox topRightVals = new VBox(5, money, bet);
+		topRightVals.setPadding(new Insets(10));
+		BorderPane.setAlignment(topRightVals, Pos.TOP_RIGHT);
 
 		betsPane.setRight(topRightVals);
 		BorderPane.setAlignment(topRightVals, Pos.TOP_RIGHT);
 
 		Text title = new Text("Make your Bets");
-		title.setFont(Font.font("Lucida Calligraphy",50));
+		title.setFont(Font.font("Lucida Calligraphy", FontWeight.BOLD, FontPosture.ITALIC,70));
 		title.setFill(Color.rgb(247, 231, 231));
 
 		StackPane titlePane = new StackPane(title);
@@ -268,15 +260,19 @@ public class BlackJackAPP extends Application {
 
 
 		Button finalizeBet = new Button("Place Bet");
-		finalizeBet.setStyle("-fx-font-family: 'Arial';-fx-font-size: 25px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-pref-width: 180px; -fx-pref-height: 60px; -fx-background-radius: 5px;");
+		finalizeBet.setStyle("-fx-font-family: 'Garamond';-fx-font-size: 40px; -fx-background-color: #8A9A5B; -fx-text-fill: white; -fx-pref-width: 200; -fx-pref-height: 50px; -fx-background-radius: 10px;-fx-font-weight: 600");
 		Text emptySpace = new Text("       ");
 		emptySpace.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 80));
 
 		VBox betButtomAlignment = new VBox(10, emptySpace, finalizeBet);
 
-		HBox chipsandButton = new HBox(30, allChips, betButtomAlignment);
-		betsPane.setBottom(chipsandButton);
-		chipsandButton.setAlignment(Pos.CENTER);
+		HBox chipsandButton = new HBox(50, allChips, betButtomAlignment);
+		Text emptySpace2 = new Text("       ");
+		emptySpace2.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 40));
+
+		VBox chipsAndButtonAligned = new VBox(chipsandButton, emptySpace2);
+		betsPane.setBottom(chipsAndButtonAligned);
+		chipsandButton.setAlignment(Pos.BOTTOM_CENTER);
 
 		Scene betScene = new Scene(betsPane, 1000, 650);
 		primaryStage.setScene(betScene);
@@ -302,7 +298,7 @@ public class BlackJackAPP extends Application {
 	private void betCalculation(Stage primaryStage, BlackjackGame game, double amount, Text balanceLabel, BorderPane betsPane, Pane titlePane) throws FileNotFoundException {
 		if (amount > game.getCurrentValue()) {
 			Text insufficientFunds = new Text("Not Enough Money!");
-			insufficientFunds.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 50));
+			insufficientFunds.setFont(Font.font("Arial", FontWeight.BOLD,70));
 			insufficientFunds.setFill(Color.RED);
 			VBox vbox = new VBox(insufficientFunds);
 			vbox.setAlignment(Pos.CENTER);
@@ -340,14 +336,17 @@ public class BlackJackAPP extends Application {
 		primaryStage.setScene(playScene);
 
 		Text money = new Text("Balance: $" + String.valueOf(game.totalWinnings));
-		money.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		money.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
 		money.setFill(Color.rgb(247, 231, 231));
+
 		Text bet = new Text("Bet: $" + String.valueOf(game.currentBet));
-		bet.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		bet.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 20));
 		bet.setFill(Color.rgb(247, 231, 231));
-		VBox topRightVals = new VBox(10, money, bet);
-		playPane.setRight(topRightVals);
+		VBox topRightVals = new VBox(5, money, bet);
+		topRightVals.setPadding(new Insets(10));
 		BorderPane.setAlignment(topRightVals, Pos.TOP_RIGHT);
+
+		playPane.setRight(topRightVals);
 
 		Button hitButton = new Button("Hit");
 		Button stayButton = new Button("Stay");
@@ -473,12 +472,15 @@ public class BlackJackAPP extends Application {
 				showOutcomeMessage(primaryStage, playPane, "You've reached a balance of 0, restart?", game.totalWinnings, game);
 			}
 			else if (game.gameLogic.handTotal(game.playerHand) == 21 && game.playerHand.size() == 2) {
-//				game.totalWinnings *= 1.5;
 				showOutcomeMessage(primaryStage, playPane, "Blackjack! You won!", game.totalWinnings, game);
 			} else if (Objects.equals(winner, "player")) {
 				showOutcomeMessage(primaryStage, playPane, "Congratulations! You won!", game.totalWinnings, game);
 			} else if (Objects.equals(winner, "dealer")) {
-				showOutcomeMessage(primaryStage, playPane, "Sorry, you lost!", game.totalWinnings, game);
+				if (game.totalWinnings < 1) { // negative balance, restart
+					showOutcomeMessage(primaryStage, playPane, "You've reached a balance of 0, restart?", game.totalWinnings, game);
+				} else {
+					showOutcomeMessage(primaryStage, playPane, "Sorry, you lost!", game.totalWinnings, game);
+				}
 			} else {
 				showOutcomeMessage(primaryStage, playPane, "Draw!", game.totalWinnings, game);
 			}
@@ -494,6 +496,8 @@ public class BlackJackAPP extends Application {
 		messageText.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
 		messageText.setFill(Color.WHITE);
 		messageText.setTextAlignment(TextAlignment.CENTER);
+
+
 
 		Text balanceText = new Text("New Balance: $" + balance);
 		balanceText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -514,6 +518,12 @@ public class BlackJackAPP extends Application {
 			WelcomePage(primaryStage);
 		});
 
+		// double check balance
+		if (balance <= 0) {
+			messageText.setText("You've reached a balance of 0, restart?");
+			playAgain.setDisable(true);
+		}
+
 		HBox buttonBox = new HBox(20, playAgain, backHome);
 		buttonBox.setAlignment(Pos.CENTER);
 
@@ -523,6 +533,7 @@ public class BlackJackAPP extends Application {
 		if (Objects.equals(message, "You've reached a balance of 0, restart?")) {
 			playAgain.setDisable(true);
 		}
+
 
 		StackPane stackPane = new StackPane(playPane, messageBox);
 		StackPane.setAlignment(messageBox, Pos.CENTER);
